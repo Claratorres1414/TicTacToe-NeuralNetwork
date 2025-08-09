@@ -22,6 +22,7 @@ public class Main {
                 }
 
                 if(game.isFull()){
+                    game.printBoard();
                     break;
                 }
 

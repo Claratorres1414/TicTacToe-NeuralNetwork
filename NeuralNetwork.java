@@ -22,7 +22,7 @@ public class NeuralNetwork {
         this.outputSize = outputSize;
 
         inputToHiddenWeights = new double[this.inputSize][this.hiddenSize];
-        outputToHiddenWeights = new double[this.outputSize][this.hiddenSize];
+        outputToHiddenWeights = new double[this.hiddenSize][this.outputSize];
 
         initializeWeights(inputToHiddenWeights);
         initializeWeights(outputToHiddenWeights);

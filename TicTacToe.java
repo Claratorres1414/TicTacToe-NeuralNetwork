@@ -1,11 +1,14 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class TicTacToe {
     private static final Scanner sc = new Scanner(System.in);
     public int[] board = new int[9];
     private static final int human = -1;
     private static final int computer = 1;
+    private static final int positionNotPlayed = 0;
 
 
     public  void printBoard() {
@@ -29,7 +32,7 @@ public class TicTacToe {
      * @return TRUE if movement was valid
      */
     public Boolean makeMove(int position, int player) {
-        if (board[position] == 0) {
+        if (board[position] == positionNotPlayed) {
             board[position] = player;
             return true;
         }
@@ -38,7 +41,7 @@ public class TicTacToe {
 
     public Boolean isFull(){
         for (int i = 0; i < board.length; i++) {
-            if (board[i] == 0) {
+            if (board[i] == positionNotPlayed) {
                 return false;
             }
         }
@@ -72,14 +75,24 @@ public class TicTacToe {
                 .toArray();
 
         double[] moveProbabilities = neuralNetwork.forward(boardInput);
+        int[] validMoves = IntStream.range(0, game.board.length)
+                        .filter(i -> game.board[i] == positionNotPlayed)
+                                .toArray();
+        int bestMove = Arrays.stream(validMoves)
+                        .boxed()
+                                .max(Comparator.comparingDouble(i -> moveProbabilities[i]))
+                                        .orElse(-1);
 
-        System.out.println("--- AI moved ---");
-        int aiMovement = (int)(Math.random() * 9);
-
-        Boolean move = makeMove(aiMovement, computer);
-        while(!move) {
-            aiMovement = (int) (Math.random() * 9);
-            move = makeMove(aiMovement, computer);
+        if (bestMove == -1) {
+            Boolean move = false;
+            while(!move) {
+                System.out.println("--- AI moved randomly ---");
+                int aiMovement = (int) (Math.random() * 9);
+                move = makeMove(aiMovement, computer);
+            }
+        }else {
+            game.makeMove(bestMove, computer);
+            System.out.println("--- AI moved based on probabilities ---");
         }
     }
 
