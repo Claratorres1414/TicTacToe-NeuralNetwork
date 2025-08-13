@@ -1,10 +1,6 @@
 public class NeuralNetwork {
-    private int inputSize; //uma matriz 3X3, que é o jogo
-    private int hiddenSize; //A quantidade de neurônios depende da complexidadde do problema, como o jogo é simples ele pode ser input + 1
-    private int outputSize; //A saída vai ser 9 também, porque o output que queremos é o status do jogo
-
-    private double[][] inputToHiddenWeights;
-    private double[][] outputToHiddenWeights;
+    private final double[][] inputToHiddenWeights;
+    private final double[][] outputToHiddenWeights;
 
     /*
         TODO:
@@ -17,18 +13,18 @@ public class NeuralNetwork {
 
 
     public NeuralNetwork(int inputSize, int hiddenSize, int outputSize) {
-        this.inputSize = inputSize;
-        this.hiddenSize = hiddenSize;
-        this.outputSize = outputSize;
+        //uma matriz 3X3, que é o jogo
+        //A quantidade de neurônios depende da complexidadde do problema, como o jogo é simples ele pode ser input + 1
+        //A saída vai ser 9 também, porque o output que queremos é o status do jogo
 
-        inputToHiddenWeights = new double[this.inputSize][this.hiddenSize];
-        outputToHiddenWeights = new double[this.hiddenSize][this.outputSize];
+        inputToHiddenWeights = new double[inputSize][hiddenSize];
+        outputToHiddenWeights = new double[hiddenSize][outputSize];
 
         initializeInputWeights(inputToHiddenWeights);
         initializeOutputWeights(outputToHiddenWeights);
     }
 
-    /*private void initializeWeights(double[][] weights) {
+    /**private void initializeWeights(double[][] weights) {
         for (int i = 0; i < weights.length; i++) {
             for (int j = 0; j < weights[0].length; j++) {
                 weights[i][j] = Math.random() * 2 -1; //Aleatório entre -1 e 1
