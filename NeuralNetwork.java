@@ -1,3 +1,6 @@
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
 public class NeuralNetwork {
     private final double[][] inputToHiddenWeights;
     private final double[][] outputToHiddenWeights;
@@ -64,6 +67,44 @@ public class NeuralNetwork {
         double[] hidden = dot(input, inputToHiddenWeights);
 
         return dot(hidden, outputToHiddenWeights);
+    }
+
+    /**
+     * Mean Squared Error Loss Function.
+
+     * Calculate how much the Network goy it wrong.
+     * This is used to penalize the model.
+     */
+    public double mse(double[] output, double[] target) {
+        List<AbstractMap.SimpleEntry<Double, Double>> zipped = zip(output, target);
+
+        double sum = zipped.stream()
+                .mapToDouble(pair -> {
+                    double erro = pair.getKey() - pair.getValue();
+                    return erro * erro;
+                })
+                .sum();
+        return sum / output.length;
+    }
+
+    public List<AbstractMap.SimpleEntry<Double, Double>> zip(double[] input, double[] other) {
+        List<AbstractMap.SimpleEntry<Double, Double>> zipped = new ArrayList<>();
+        int size = Math.min(input.length, other.length);
+
+        for (int i = 0; i < size; i++) {
+            zipped.add(new AbstractMap.SimpleEntry<>(input[i], other[i]));
+        }
+
+        return zipped;
+    }
+
+    /**
+     * Backpropagation:
+     * - Loss Function: Mean Square Error (MSE).
+     * - Propagate the error backwards in the network.
+     * - Updating the weights.
+     */
+    public void backPropagation(double[] input, double[] target, double[] output, double learningRate) {
     }
 
     private double sigmoid (double x) {
