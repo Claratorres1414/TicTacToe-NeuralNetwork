@@ -24,16 +24,44 @@ public class NeuralNetwork {
         inputToHiddenWeights = new double[this.inputSize][this.hiddenSize];
         outputToHiddenWeights = new double[this.hiddenSize][this.outputSize];
 
-        initializeWeights(inputToHiddenWeights);
-        initializeWeights(outputToHiddenWeights);
+        initializeInputWeights(inputToHiddenWeights);
+        initializeOutputWeights(outputToHiddenWeights);
     }
 
-    private void initializeWeights(double[][] weights) {
+    /*private void initializeWeights(double[][] weights) {
         for (int i = 0; i < weights.length; i++) {
             for (int j = 0; j < weights[0].length; j++) {
                 weights[i][j] = Math.random() * 2 -1; //Aleatório entre -1 e 1
             }
         }
+    }*/
+
+    private void initializeInputWeights(double[][] weights) {
+        for (int i = 0; i < weights.length; i++) {
+            for (int j = 0; j < weights[0].length; j++) {
+                if (isWinningPosition(i)) {
+                    weights[i][j] = 1.0;
+                } else {
+                    weights[i][j] = 0.1;
+                }
+            }
+        }
+    }
+
+    private void initializeOutputWeights(double[][] weights) {
+        for (int i = 0; i < weights.length; i++) {
+            for (int j = 0; j < weights[0].length; j++) {
+                if (i % 3 == 0) {
+                    weights[i][j] = 1.0;
+                } else {
+                    weights[i][j] = 0.1;
+                }
+            }
+        }
+    }
+
+    private boolean isWinningPosition(int index) {
+        return index == 0 || index == 2 || index == 6 || index == 8;
     }
 
     public double[] forward(double[] input) {
